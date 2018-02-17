@@ -1,4 +1,5 @@
 $( document ).ready(function() {
-    console.log("I'm running")
-    $('#basicExample').timepicker();
+    var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+
 });

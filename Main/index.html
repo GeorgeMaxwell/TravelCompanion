@@ -9,6 +9,7 @@
     <meta name="author" content="">
 
     <title>Travel Companion</title>
+
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/css/clockpicker.css" rel="stylesheet">
@@ -16,7 +17,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" type="text/javascript"></script>
     <script src="static/js/clockpicker.js" type="text/javascript"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBigK1hXYuZsJHSTfZyXL0TgkxcdRRutlI&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuT3QpJ3_dXglE2PT6a05035_7hCuw4JU&libraries=places"></script>
 
     <!-- Custom fonts for this template -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -24,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
     <!-- Plugin CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css" rel="stylesheet" type="text/css">
+    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
     <link href="static/css/freelancer.min.css" rel="stylesheet">
@@ -70,10 +71,10 @@
         <form>
           <div class="form-group">
             <label >Home Address</label>
-            <input id="pac-home"  class="form-control" type="text" placeholder="Search Box">
+            <input id="pac-input"  class="form-control" type="text" placeholder="Search Box">
 
             <label >Work Address</label>
-              <input id="pac-work"  class="form-control" type="text" placeholder="Search Box">
+            <input type="text" class="form-control" autocomplete="off" placeholder="AB12 3CD">
           </div>
             <div class="form-group">
               <label >Phone Number</label>
@@ -183,18 +184,19 @@
 
 
     <!-- Bootstrap core JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script src="static/js/jqBootstrapValidation.js"></script>
-    <script src="static/js/contact_me.js"></script>
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="static/js/freelancer.min.js"></script>
+    <script src="js/freelancer.min.js"></script>
 
   </body>
 

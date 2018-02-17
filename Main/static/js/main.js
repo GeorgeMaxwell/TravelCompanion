@@ -5,21 +5,20 @@ $( document ).ready(function() {
     var home = document.getElementById('pac-home');
     var homeSearch = new google.maps.places.SearchBox(home);
 
-        
+
     $("#updateBtn").click(function(){
         alert("Your details have been updated!");
         var geocoder = new google.maps.Geocoder();
+
         //var ans = geocodeAddress(geocoder,$('#pac-home').val());
         geocodeAddress(geocoder,$('#pac-home').val(), function(search_latlng) {
           console.log(search_latlng);
-
         });
-       geocodeAddress(geocoder,$('#pac-work').val(), function(search_latlng) {
-            console.log(search_latlng);
 
-        });
-        //console.log(ans);
-        //console.log(homeSearch.getBounds());
+        var timeTaken = journeyTime($('#pac-home').val(),$('#pac-work').val())
+        $.post("/getText",{
+            timeTaken: text
+        })
     });
 
     function geocodeAddress(geocoder,address, callback) {
@@ -36,5 +35,22 @@ $( document ).ready(function() {
             }
         });
     }
+    function journeyTime(origin,destination){
+
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    var request = {
+        origin: origin,
+        destination: destination,
+        travelMode: 'DRIVING'
+      };
+      directionsService.route(request, function(result, status) {
+          if (status == 'OK') {
+            directionsDisplay.setDirections(result);
+            return result.routes["0"].legs["0"].duration.text;
+          }
+        });
+    }
+
 
 });

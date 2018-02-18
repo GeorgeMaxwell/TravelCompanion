@@ -9,6 +9,17 @@ $( document ).ready(function() {
     var homeCoordsLng = "";
     var workCoordsLat = "";
     var workCoordsLng = "";
+	
+	var mot;
+	var transportMethod  = $('#mot').val();
+
+	var tubeLine
+	var roadPath
+	
+	$("#mot").on('change', function(){
+        transportMethod = $(this).val();
+        console.log($(this).val())
+    });
 
 
     $("#updateBtn").click(function(){
@@ -24,6 +35,14 @@ $( document ).ready(function() {
             workCoordsLat = search_latlng[0]
             workCoordsLng = search_latlng[1]
         });
+		
+		if (transportMethod=="DRIVING") {
+            traffic()
+            console.log(roadPath)
+        }
+        else {
+            delays()
+        }
 
         journeyTime($('#pac-home').val(),$('#pac-work').val(), function(search_timetaken) {
             var phoneNumber = $("#pac-number").val()
@@ -91,16 +110,45 @@ $( document ).ready(function() {
     var request = {
         origin: origin,
         destination: destination,
-        travelMode: 'DRIVING'
+        travelMode: transportMethod
       };
       directionsService.route(request, function(result, status) {
           if (status == 'OK') {
             directionsDisplay.setDirections(result);
+			roadPath = result.routes["0"].summary;
+            console.log(result)
             callback(result.routes["0"].legs["0"].duration.text)
             //return result.routes["0"].legs["0"].duration.text;
           }
         });
     }
 
+	function traffic(){
+        $.ajax({
+            type: 'GET',
+            url: 'https://api.tfl.gov.uk/Road/'+roadPath+'/Disruption?app_id=726a9716&app_key=443f7f792eb857c6b6c4593a36e38069',
+            dataType: 'json',
+            success: function(data){
+                $.each(data, function(key, value){
+                    var comments = value.comments;
+                    console.log(comments)
+                });
+            }
+        });
+    }
+
+    function delays(){
+            $.ajax({
+                type: 'GET',
+                url: 'https://api.tfl.gov.uk/Line/Mode/tube/Disruption?app_id=726a9716&app_key=443f7f792eb857c6b6c4593a36e38069',
+                dataType: 'json',
+                success: function(data){
+                    $.each(data, function(key, value){
+                        var comments = value.description;
+                        console.log(comments)
+                    });
+                }
+            });
+        }
 
 });

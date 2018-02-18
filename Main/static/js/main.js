@@ -5,20 +5,69 @@ $( document ).ready(function() {
     var home = document.getElementById('pac-home');
     var homeSearch = new google.maps.places.SearchBox(home);
 
+    var homeCoordsLat = "";
+    var homeCoordsLng = "";
+    var workCoordsLat = "";
+    var workCoordsLng = "";
+
 
     $("#updateBtn").click(function(){
         alert("Your details have been updated!");
         var geocoder = new google.maps.Geocoder();
-
         //var ans = geocodeAddress(geocoder,$('#pac-home').val());
         geocodeAddress(geocoder,$('#pac-home').val(), function(search_latlng) {
-          console.log(search_latlng);
+            homeCoordsLat = search_latlng[0]
+            homeCoordsLng = search_latlng[1]
         });
 
-        var timeTaken = journeyTime($('#pac-home').val(),$('#pac-work').val())
-        $.post("/getText",{
-            timeTaken: text
-        })
+        geocodeAddress(geocoder,$('#pac-work').val(), function(search_latlng) {
+            workCoordsLat = search_latlng[0]
+            workCoordsLng = search_latlng[1]
+        });
+
+        journeyTime($('#pac-home').val(),$('#pac-work').val(), function(search_timetaken) {
+            var phoneNumber = $("#pac-number").val()
+
+            $('input[type=checkbox]:checked').each(function(index){
+                console.log(phoneNumber)
+                console.log($(this).val())
+                console.log($(this).closest('td').next('td').find('input').val())
+                console.log(homeCoordsLat)
+                console.log(homeCoordsLng)
+                console.log(workCoordsLat)
+                console.log(workCoordsLng)
+                console.log("________________")
+                $.post("/addJourney", {
+                    phone: phoneNumber,
+                    journeyDay: $(this).val(),
+                    journeyArriveTime: $(this).closest('td').next('td').find('input').val(),
+                    homeLat: homeCoordsLat,
+                    homeLng: homeCoordsLng,
+                    workLat: workCoordsLat,
+                    workLng: workCoordsLng
+
+            	},
+            	function(data) {
+            	});
+            });
+            /*
+            $.post("/sendText", {
+                timeTaken: search_timetaken,
+                phone: $("#pac-number").val()
+        	},
+        	function(data) {
+        	    alert("Test")
+        	});*/
+        });
+
+        /*var timeTaken = journeyTime($('#pac-home').val(),$('#pac-work').val())
+        alert(timeTaken)
+        $.post("/sendText", {
+            time: timeTaken
+    	},
+    	function(data) {
+    	    alert("Test")
+    	});*/
     });
 
     function geocodeAddress(geocoder,address, callback) {
@@ -35,7 +84,7 @@ $( document ).ready(function() {
             }
         });
     }
-    function journeyTime(origin,destination){
+    function journeyTime(origin,destination, callback){
 
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -47,7 +96,8 @@ $( document ).ready(function() {
       directionsService.route(request, function(result, status) {
           if (status == 'OK') {
             directionsDisplay.setDirections(result);
-            return result.routes["0"].legs["0"].duration.text;
+            callback(result.routes["0"].legs["0"].duration.text)
+            //return result.routes["0"].legs["0"].duration.text;
           }
         });
     }
